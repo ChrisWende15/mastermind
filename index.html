@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mastermind Mallorca 2026 · Chris Wende</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --petrol: #006D8B;
+    --petrol-light: #0088ab;
+    --white: #ffffff;
+    --gray: #aaaaaa;
+    --gray-dark: #333333;
+    --section-bg: #111111;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── NAVIGATION ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #ffffff0a;
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; letter-spacing: 3px; color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--petrol); }
+  .nav-cta {
+    background: var(--petrol);
+    color: var(--white);
+    padding: 10px 24px;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .nav-cta:hover { background: var(--petrol-light); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.75) 60%, rgba(10,10,10,1) 100%),
+      linear-gradient(135deg, #006D8B22 0%, transparent 50%);
+    background-color: #0d1a1f;
+  }
+  .hero-dots {
+    position: absolute; right: 0; top: 80px;
+    width: 400px; height: 500px;
+    background-image: radial-gradient(circle, #006D8B40 1.5px, transparent 1.5px);
+    background-size: 30px 30px;
+    opacity: 0.6;
+  }
+  .hero-accent-line {
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--petrol);
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 900px; }
+  .hero-eyebrow {
+    font-size: 13px; font-weight: 500; color: var(--petrol);
+    letter-spacing: 6px; text-transform: uppercase; margin-bottom: 24px;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 12vw, 160px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+    margin-bottom: 36px;
+  }
+  .hero h1 .accent { color: var(--petrol); }
+  .hero-sub {
+    font-size: clamp(18px, 2vw, 24px);
+    font-weight: 300; color: #cccccc;
+    line-height: 1.6; max-width: 620px;
+    margin-bottom: 48px;
+  }
+  .hero-meta {
+    display: flex; gap: 40px; flex-wrap: wrap;
+    margin-bottom: 50px;
+  }
+  .hero-meta-item {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .hero-meta-label {
+    font-size: 11px; font-weight: 500; color: var(--petrol);
+    letter-spacing: 4px; text-transform: uppercase;
+  }
+  .hero-meta-value {
+    font-size: 18px; font-weight: 400; color: var(--white);
+  }
+  .hero-cta-group { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--petrol);
+    color: var(--white);
+    padding: 18px 40px;
+    font-size: 14px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--petrol-light); transform: translateY(-1px); }
+  .hero-spots {
+    font-size: 14px; font-weight: 400; color: var(--gray);
+  }
+  .hero-spots strong { color: var(--petrol); }
+
+  /* ── SECTION WRAPPER ── */
+  section { padding: 100px 60px; }
+  .section-eyebrow {
+    font-size: 12px; font-weight: 500; color: var(--petrol);
+    letter-spacing: 6px; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 6vw, 80px);
+    line-height: 0.95; letter-spacing: 1px;
+    margin-bottom: 60px;
+  }
+  .section-title .accent { color: var(--petrol); }
+
+  /* ── INTRO STRIP ── */
+  .intro-strip {
+    background: var(--petrol);
+    padding: 50px 60px;
+    display: flex; align-items: center; gap: 60px;
+    flex-wrap: wrap;
+  }
+  .intro-strip p {
+    font-size: clamp(20px, 2.5vw, 28px);
+    font-weight: 300; line-height: 1.5;
+    flex: 1; min-width: 280px;
+  }
+  .intro-strip p strong { font-weight: 700; }
+  .intro-divider { width: 1px; height: 80px; background: #ffffff44; flex-shrink: 0; }
+
+  /* ── CONTENT GRID ── */
+  .content-section { background: var(--section-bg); }
+  .content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2px;
+  }
+  .content-card {
+    background: var(--black);
+    padding: 50px 44px;
+    border-left: 3px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .content-card:hover { border-left-color: var(--petrol); }
+  .content-card-icon {
+    font-size: 36px; margin-bottom: 24px;
+  }
+  .content-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; letter-spacing: 1px;
+    color: var(--white); margin-bottom: 14px;
+  }
+  .content-card-body {
+    font-size: 16px; font-weight: 300; color: #999999;
+    line-height: 1.65; margin-bottom: 20px;
+  }
+  .content-card-outcome {
+    font-size: 15px; font-weight: 400; color: var(--petrol);
+    line-height: 1.5;
+  }
+  .content-card-outcome::before { content: "→ "; }
+
+  /* ── LOCATION ── */
+  .location-section { background: var(--black); }
+  .location-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;
+  }
+  .location-text h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px; letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  .location-text h3 span { color: var(--petrol); }
+  .location-text p {
+    font-size: 18px; font-weight: 300; color: #aaaaaa;
+    line-height: 1.7; margin-bottom: 30px;
+  }
+  .location-facts { display: flex; flex-direction: column; gap: 16px; }
+  .location-fact {
+    display: flex; align-items: center; gap: 16px;
+    font-size: 16px; color: var(--white);
+  }
+  .location-fact .f-icon { font-size: 20px; flex-shrink: 0; }
+  .location-visual {
+    background: #0d1a1f;
+    border: 1px solid #006D8B33;
+    padding: 50px 40px;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .villa-feature {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #ffffff0a;
+  }
+  .villa-feature:last-child { border-bottom: none; padding-bottom: 0; }
+  .villa-feature-icon { font-size: 28px; flex-shrink: 0; }
+  .villa-feature-text strong {
+    display: block; font-size: 16px; font-weight: 500;
+    color: var(--white); margin-bottom: 4px;
+  }
+  .villa-feature-text span {
+    font-size: 14px; font-weight: 300; color: #777777;
+  }
+
+  /* ── INVESTMENT ── */
+  .investment-section { background: var(--section-bg); }
+  .investment-box {
+    background: var(--black);
+    border: 1px solid #006D8B33;
+    padding: 70px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: center;
+  }
+  .price-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 10vw, 120px);
+    line-height: 1; color: var(--petrol);
+  }
+  .price-label {
+    font-size: 14px; font-weight: 300; color: var(--gray);
+    letter-spacing: 2px; margin-top: 8px;
+  }
+  .includes-title {
+    font-size: 12px; font-weight: 500; color: var(--petrol);
+    letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px;
+  }
+  .includes-list { display: flex; flex-direction: column; gap: 12px; }
+  .includes-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 16px; font-weight: 300; color: #cccccc; line-height: 1.4;
+  }
+  .includes-item::before {
+    content: "✓";
+    color: var(--petrol); font-weight: 700; flex-shrink: 0; margin-top: 1px;
+  }
+  .not-included {
+    margin-top: 20px; padding-top: 20px;
+    border-top: 1px solid #ffffff0a;
+    font-size: 13px; color: #555555; line-height: 1.6;
+  }
+
+  /* ── CTA SECTION ── */
+  .cta-section {
+    background: var(--petrol);
+    padding: 100px 60px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-section h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(60px, 8vw, 100px);
+    line-height: 0.95; letter-spacing: 2px;
+    color: var(--white); margin-bottom: 24px;
+  }
+  .cta-section p {
+    font-size: clamp(16px, 2vw, 20px);
+    font-weight: 300; color: #ffffffcc;
+    max-width: 560px; margin: 0 auto 48px; line-height: 1.6;
+  }
+  .cta-email-display {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    color: var(--white); letter-spacing: 2px;
+    display: block; margin-bottom: 40px;
+    text-decoration: none;
+    border-bottom: 2px solid #ffffff44;
+    padding-bottom: 8px; display: inline-block;
+  }
+  .cta-email-display:hover { border-color: var(--white); }
+  .cta-note {
+    font-size: 14px; color: #ffffff88; margin-top: 20px;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black);
+    padding: 40px 60px;
+    border-top: 1px solid #ffffff0a;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;
+  }
+  footer p { font-size: 14px; color: #555555; }
+  footer a { color: var(--petrol); text-decoration: none; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .hero { padding: 0 24px 60px; }
+    section { padding: 70px 24px; }
+    .intro-strip { padding: 40px 24px; }
+    .intro-divider { display: none; }
+    .location-grid { grid-template-columns: 1fr; }
+    .investment-box { grid-template-columns: 1fr; padding: 40px 30px; }
+    .cta-section { padding: 70px 24px; }
+    footer { padding: 30px 24px; flex-direction: column; }
+    .hero-meta { gap: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">CHRIS <span>WENDE</span></a>
+  <a href="mailto:info@chris-wende.com" class="nav-cta">Platz sichern</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-accent-line"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Exklusive Einladung · Strategietage für Unternehmer</div>
+    <h1>Master<br>mind<br><span class="accent">Mal&shy;lor&shy;ca</span></h1>
+    <p class="hero-sub">Zwei intensive Tage in einer privaten Villa auf Mallorca – mit Unternehmern, die genauso ambitioniert sind wie du.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Datum</span>
+        <span class="hero-meta-value">24. & 25. September 2026</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Location</span>
+        <span class="hero-meta-value">Villa Son Dameto, Palma de Mallorca</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Investition</span>
+        <span class="hero-meta-value">1.200 € netto</span>
+      </div>
+    </div>
+    <div class="hero-cta-group">
+      <a href="mailto:info@chris-wende.com?subject=Mastermind Mallorca – Ich bin dabei" class="btn-primary">Jetzt Platz sichern</a>
+      <span class="hero-spots">Nur noch <strong>10 von 20 Plätzen</strong> verfügbar</span>
+    </div>
+  </div>
+</section>
+
+<!-- INTRO STRIP -->
+<div class="intro-strip">
+  <p>Du hast ein erfolgreiches Business aufgebaut – aber du weißt, dass <strong>da noch mehr geht.</strong></p>
+  <div class="intro-divider"></div>
+  <p>Wahre Skalierung bedeutet nicht, härter zu arbeiten. Es bedeutet, die <strong>richtigen Hebel in Bewegung zu setzen.</strong></p>
+</div>
+
+<!-- CONTENT -->
+<section class="content-section">
+  <div class="section-eyebrow">Was dich erwartet</div>
+  <div class="section-title">7 Themen.<br><span class="accent">Konkrete</span> Ergebnisse.</div>
+  <div class="content-grid">
+    <div class="content-card">
+      <div class="content-card-icon">🤖</div>
+      <div class="content-card-title">KI & Automation</div>
+      <div class="content-card-body">Prozessoptimierung und Integration von KI – praxisnah und direkt umsetzbar.</div>
+      <div class="content-card-outcome">Du sparst Stunden an manueller Arbeit ab Tag eins.</div>
+    </div>
+    <div class="content-card">
+      <div class="content-card-icon">⚙️</div>
+      <div class="content-card-title">Hands-on Workshops</div>
+      <div class="content-card-body">Keine Theorie, keine Hausaufgaben. Direkte Umsetzung vor Ort.</div>
+      <div class="content-card-outcome">Du verlässt Mallorca mit fertigen Lösungen, die sofort einsatzbereit sind.</div>
+    </div>
+    <div class="content-card">
+      <div class="content-card-icon">🎤</div>
+      <div class="content-card-title">Rhetorik & Leadership</div>
+      <div class="content-card-body">Kommunikation, Führungsstärke und Wirkung in Verhandlungen und vor dem Team.</div>
+      <div class="content-card-outcome">Du führst klarer, motivierst nachhaltiger, trittst souveräner auf.</div>
+    </div>
+    <div class="content-card">
+      <div class="content-card-icon">📈</div>
+      <div class="content-card-title">Skalierungsstrategien</div>
+      <div class="content-card-body">Wachstum ohne selbst zum Engpass zu werden. Strukturen, die ohne dich laufen.</div>
+      <div class="content-card-outcome">Mehr Umsatz. Weniger Abhängigkeit von deiner eigenen Arbeitszeit.</div>
+    </div>
+    <div class="content-card">
+      <div class="content-card-icon">🧠</div>
+      <div class="content-card-title">Mindset der Top 1%</div>
+      <div class="content-card-body">Denkweisen, Strategien und Vermögenshebel der erfolgreichsten Unternehmer.</div>
+      <div class="content-card-outcome">Du verstehst, wie Top-Performer denken – und kannst es direkt anwenden.</div>
+    </div>
+    <div class="content-card">
+      <div class="content-card-icon">🔥</div>
+      <div class="content-card-title">Hotseat-Sessions</div>
+      <div class="content-card-body">Deine Herausforderung, analysiert von 20 erfahrenen Unternehmern. Gemeinsam.</div>
+      <div class="content-card-outcome">Du gehst nicht mit offenen Fragen nach Hause.</div>
+    </div>
+    <div class="content-card">
+      <div class="content-card-icon">🤝</div>
+      <div class="content-card-title">High-Level Networking</div>
+      <div class="content-card-body">Unternehmerischer Austausch auf höchstem Niveau – in einer Villa, nicht im Konferenzraum.</div>
+      <div class="content-card-outcome">Ein Gespräch kann neue Partnerschaften auslösen, die alles verändern.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="location-section">
+  <div class="section-eyebrow">Der Veranstaltungsort</div>
+  <div class="location-grid">
+    <div class="location-text">
+      <h3>Villa <span>Son Dameto</span><br>Palma de Mallorca</h3>
+      <p>Kein Hotel. Kein Seminarraum. Eine private Villa mit allem, was du brauchst, um wirklich zu denken – und zu arbeiten.</p>
+      <div class="location-facts">
+        <div class="location-fact"><span class="f-icon">📅</span> Do. & Fr., 24.–25. September 2026</div>
+        <div class="location-fact"><span class="f-icon">🕘</span> Jeweils 09:00 – 18:00 Uhr</div>
+        <div class="location-fact"><span class="f-icon">✈️</span> Nur 10 Minuten vom Flughafen Palma</div>
+        <div class="location-fact"><span class="f-icon">👥</span> Maximal 20 Teilnehmer</div>
+      </div>
+    </div>
+    <div class="location-visual">
+      <div class="villa-feature">
+        <span class="villa-feature-icon">🏊</span>
+        <div class="villa-feature-text">
+          <strong>Privater Pool</strong>
+          <span>Exklusiv für die Gruppe – perfekt für Gespräche abseits des Programms.</span>
+        </div>
+      </div>
+      <div class="villa-feature">
+        <span class="villa-feature-icon">🌿</span>
+        <div class="villa-feature-text">
+          <strong>Outdoor-Lounge & Terrasse</strong>
+          <span>Workshops unter freiem Himmel – Strategie trifft Mallorca-Feeling.</span>
+        </div>
+      </div>
+      <div class="villa-feature">
+        <span class="villa-feature-icon">🍽️</span>
+        <div class="villa-feature-text">
+          <strong>Gemeinsames Mittagessen inklusive</strong>
+          <span>An beiden Veranstaltungstagen – Netzwerken beim Essen inklusive.</span>
+        </div>
+      </div>
+      <div class="villa-feature">
+        <span class="villa-feature-icon">💼</span>
+        <div class="villa-feature-text">
+          <strong>Wohn- & Arbeitsbereich</strong>
+          <span>Vollständig ausgestattet für intensive Workshop-Sessions.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT -->
+<section class="investment-section">
+  <div class="section-eyebrow">Deine Investition</div>
+  <div class="section-title">Klar. <span class="accent">Transparent.</span></div>
+  <div class="investment-box">
+    <div>
+      <div class="price-big">1.200 €</div>
+      <div class="price-label">netto · einmalig</div>
+    </div>
+    <div>
+      <div class="includes-title">Inklusive</div>
+      <div class="includes-list">
+        <div class="includes-item">Teilnahme an allen Workshops, Vorträgen & Mastermind-Sessions</div>
+        <div class="includes-item">Zugang zu allen Hotseat-Runden</div>
+        <div class="includes-item">Mittagessen an beiden Veranstaltungstagen</div>
+        <div class="includes-item">Hotelempfehlungen in der Nähe auf Anfrage</div>
+      </div>
+      <div class="not-included">
+        Flug, Übernachtung und Abendessen sind Selbstzahler.<br>
+        Gerne unterstützen wir dich mit Empfehlungen.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2>Bist du<br>dabei?</h2>
+  <p>Die Plätze sind streng limitiert, um einen intensiven und persönlichen Austausch zu garantieren. Noch 10 Plätze verfügbar.</p>
+  <a href="mailto:info@chris-wende.com?subject=Mastermind Mallorca – Ich bin dabei" class="cta-email-display">info@chris-wende.com</a>
+  <br>
+  <a href="mailto:info@chris-wende.com?subject=Mastermind Mallorca – Ich bin dabei" class="btn-primary" style="background:#0a0a0a;">Jetzt Platz sichern →</a>
+  <p class="cta-note">Schreib uns einfach – wir melden uns innerhalb von 24 Stunden.</p>
+</section>
+
+<footer>
+  <p>© 2026 Chris Wende · Wende High Performance Consulting GmbH</p>
+  <p><a href="https://chris-wende.com">chris-wende.com</a> · <a href="mailto:info@chris-wende.com">info@chris-wende.com</a></p>
+</footer>
+
+</body>
+</html>
